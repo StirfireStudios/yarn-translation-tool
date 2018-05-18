@@ -25,14 +25,21 @@ function createWindow() {
         mainWindow.webContents.openDevTools({mode: 'undocked'});
 
 		// Install React Dev Tools
-		const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer'); // eslint-disable-line
+		const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer'); // eslint-disable-line
 		installExtension(REACT_DEVELOPER_TOOLS)
 			.then((name) => {
 				console.log(`Added Extension:  ${name}`);
 			})
 			.catch((err) => {
-				console.log('An error occurred: ', err);
-			});
+				console.log('React Dev Tools - An error occurred: ', err);
+            });
+        installExtension(REDUX_DEVTOOLS) 
+            .then((name) => {
+                console.log(`Added Extension:  ${name}`);
+            })
+            .catch((err) => {
+                console.log('Redux Dev Tools - An error occurred: ', err);
+            });
     }
 
     // Emitted when the window is closed.
