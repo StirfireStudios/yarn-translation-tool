@@ -19,6 +19,7 @@ function createWindow() {
     // and load the index.html of the app.
     const urlBase = isDev ? 'http://localhost:3000' : `file://${__dirname}`;
     mainWindow.loadURL(`${urlBase}/index.html`);
+    mainWindow.setMenu(null);
 
     if (isDev) {
         // open dev console in another window;

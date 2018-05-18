@@ -10,5 +10,5 @@ import registerServiceWorker from './registerServiceWorker';
 const store = createStore();
 assignActions(store);
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App store={store}/>, document.getElementById('root'));
 registerServiceWorker();
