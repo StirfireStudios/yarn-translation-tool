@@ -5,6 +5,7 @@
   "version": "0.1.0",
   "private": true,
   "main": "public/electron.js",
+  "homepage": "./",
   "build": {
     "appId": "com.stirfire.yarntranslations",
     "files": [
@@ -35,6 +36,7 @@
     "build": "node util/electron-build.js"
   },
   "devDependencies": {
+    "asar": "^0.14.3",
     "commander": "^2.15.1",
     "electron": "^2.0.1",
     "electron-builder": "^20.13.4",
