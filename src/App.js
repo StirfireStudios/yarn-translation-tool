@@ -4,6 +4,9 @@ import { Provider as ElectronProvider } from 'react-electron-menu';
 
 import Menu from './components/Menu';
 import FileInfo from './components/FileInfo';
+import VersionInfo from './components/VersionInfo';
+
+import './App.css';
 
 const electron = window.require('electron');
 
@@ -15,7 +18,8 @@ class App extends Component {
           <div className="App">
             <Menu/>
             <FileInfo/>
-          </div> 
+            <VersionInfo/>
+          </div>
         </ElectronProvider>
       </ReduxProvider>
     );
