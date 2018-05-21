@@ -1,6 +1,6 @@
 import { Parser as YarnParser } from 'jacquard-yarnparser';
 import ShortID from 'shortid';
-import CsvWriter from 'csv-write-stream';
+import XLSX from 'xlsx';
 
 import * as DataActions from '../actions/data';
 
@@ -44,20 +44,26 @@ export function Parse(key, data) {
   }, 0);
 }
 
-function csvPathFor(filepath) {
-  const extension = Path.extname(filepath);
-  return filepath.substring(0, filepath.length - extension.length) + ".csv";
+function partsOf(filepath) {
+  const extension = Path.extname(filepath)
+  return {
+    full: filepath,
+    fileName: Path.basename(filepath),
+    extension,
+    base: Path.basename(filepath, extension),
+    dir: Path.dirname(filepath),
+  }
 }
 
 export function SaveCSV(key, filepath, results) {
   DataActions.SaveStarted(key);
   // avoid Zalgo
   setTimeout(() => {
-    const writer = CsvWriter({headers: results.headers});
-    writer.pipe(fs.createWriteStream(csvPathFor(filepath)));
-    results.forEach(result => {
-      writer.write(result);
-    });
-    writer.end();
+    const wb = XLSX.utils.book_new();
+    const recordingData = XLSX.utils.aoa_to_sheet(results.recording);
+    XLSX.utils.book_append_sheet(wb, recordingData, "Recording Info");
+    const translationData = XLSX.utils.aoa_to_sheet(results.translation);
+    XLSX.utils.book_append_sheet(wb, translationData, "Translation Info");
+    XLSX.writeFile(wb, partsOf(filepath).base + ".xlsb");
   },0);
 }

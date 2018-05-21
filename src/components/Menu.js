@@ -19,6 +19,7 @@ function onLoad() {
       {name: 'Yarn Files', extensions: ['yarn.txt', 'yarn']},
     ],
   }, (filePaths) => {
+    if (filePaths == null) return;
     for(let path of filePaths) { DataAsyncActions.LoadFile(path); }
   });
   console.log("Show Load Dialogue");

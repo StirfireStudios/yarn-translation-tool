@@ -3,17 +3,20 @@ import extractText from './extractText';
 import * as Identifiers from './identifiers';
 
 function formatOutput(segments) {
-  const output = [];
-  output.headers = [
+  const output = {recording: [], translation: []}
+  output.recording.push([
     "Text", "Node Name", "SegmentID", "Line number", "Word Count", "Est. Length"
-  ];
+  ]);
+  output.translation.push([
+    "Text", "Node Name", "SegmentID", "Path", "Notes", "Word Count"
+  ]);
   segments.forEach((segment) => {
     const nodeName = segment.nodeName;
     const segmentID = segment.identifier;
     let lineNo = 1;
     const allText = [];
     segment.lines.forEach((line) => {
-      output.push([
+      output.recording.push([
         line.text,
         nodeName,
         segmentID,
@@ -24,12 +27,21 @@ function formatOutput(segments) {
       allText.push(line.text);
     });
 
-    output.push([
+    output.recording.push([
       allText.join("\n"),
       nodeName,
       segmentID,
       "n/a",
       segment.wordCount
+    ]);
+
+    output.translation.push([
+      allText.join("\n"),
+      nodeName,
+      segmentID,
+      `Dialog.${segmentID}`,
+      "n/a",
+      segment.wordCount,
     ]);
 
   });
