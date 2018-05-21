@@ -16,7 +16,7 @@ function onLoad() {
     title: "Open Yarn Files(s)",
     properties: ['openFile', 'multiSelections'],
     filters: [
-      {name: 'Yarn Files', extensions: ['yarn.txt', 'yarn']},
+      {name: 'Yarn Files', extensions: ['txt', 'yarn']},
     ],
   }, (filePaths) => {
     if (filePaths == null) return;
