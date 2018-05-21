@@ -15,12 +15,12 @@
     }
   },
   "dependencies": {
+    "csv-write-stream": "^2.0.0",
     "jacquard-runtime": "^0.1.0",
     "jacquard-yarnparser": "^0.4.0",
     "prop-types": "^15.6.1",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
-    "react-electron-menu": "^0.3.0",
     "react-redux": "^5.0.7",
     "react-scripts": "1.1.4",
     "redux": "^4.0.0",

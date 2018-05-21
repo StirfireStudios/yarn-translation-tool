@@ -10,6 +10,11 @@ function processFile(data, event) {
   event.preventDefault();
 }
 
+function saveCSV(data, event) {
+  DataAsyncActions.SaveCSV(data.key, data.path, data.parseResults);
+  event.preventDefault();
+}
+
 function unloadFile(data, event) {
   DataActions.UnloadFile(data.key);
   event.preventDefault();
@@ -25,10 +30,20 @@ function renderMessage(data) {
   if (data.parsing) {
     return <span key="parsing" className="parsing">Parsing file: </span>;    
   }
-  
+  if (data.saving) {
+    return <span key="saving" className="saving">Saving file: </span>;      
+  }
+
+  let firstButton = null;
+  if (data.parseResults === null) {
+    firstButton = <button key="process" onClick={processFile.bind(null, data)}>Process</button>
+  } else {
+    firstButton = <button key="save" onClick={saveCSV.bind(null, data)}>Save</button>
+  }
+
   return (
     <div key="actions">
-      <button key="process" onClick={processFile.bind(null, data)}>Process</button>
+      {firstButton}
       <button key="unload" onClick={unloadFile.bind(null, data)}>Unload</button>
     </div>
   );

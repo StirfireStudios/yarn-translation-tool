@@ -11,13 +11,14 @@ export default createReducer({
       parsing: false,
       error: null,
       data: null,
+      parseResults: null,
     }
     return {
       ...state,
       fileState: newFileState,
     }
   },
-  [DataActions.LoadComplete]: (state, data) => {
+  [DataActions.LoadCompleted]: (state, data) => {
     const newFileState = Object.assign({}, state.fileState);
     newFileState[data.id].loading = false;
     newFileState[data.id].data = data.data;
@@ -42,14 +43,25 @@ export default createReducer({
       fileState: newFileState,
     }    
   },
-  [DataActions.ParseStart]: (state, id) => {
+  [DataActions.ParseStarted]: (state, id) => {
     const newFileState = Object.assign({}, state.fileState);
     newFileState[id].parsing = true;
+    newFileState[id].parseResults = null;
     return {
       ...state,
       fileState: newFileState,
     }    
   },  
+  [DataActions.ParseCompleted]: (state, data) => {
+    const newFileState = Object.assign({}, state.fileState);
+    newFileState[data.id].parsing = false;
+    newFileState[data.id].parseResults = data.results;
+    console.log(data.results);
+    return {
+      ...state,
+      fileState: newFileState,
+    }    
+  },
 },{
   fileState: {},
 });

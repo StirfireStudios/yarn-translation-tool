@@ -1,27 +1,44 @@
-import { Statement as YarnStatements} from 'jacquard-yarnparser'; 
+import getDialogueSegments from './getDialogueSegments';
+import extractText from './extractText';
+import * as Identifiers from './identifiers';
 
-import DialogueSegment from 'jacquard-yarnparser/dist/statements/dialogueSegment';
+function formatOutput(segments) {
+  const output = [];
+  output.headers = [
+    "Text", "Node Name", "SegmentID", "Line number", "Word Count", "Est. Length"
+  ];
+  segments.forEach((segment) => {
+    const nodeName = segment.nodeName;
+    const segmentID = segment.identifier;
+    let lineNo = 1;
+    const allText = [];
+    segment.lines.forEach((line) => {
+      output.push([
+        line.text,
+        nodeName,
+        segmentID,
+        lineNo,
+        line.wordCount
+      ]);
+      lineNo++;
+      allText.push(line.text);
+    });
 
-function processStatements(array, statements) {
-  for(let statement of statements) {
-    if (statement instanceof DialogueSegment) {
-      array.push(statement);
-      return;
-    }
+    output.push([
+      allText.join("\n"),
+      nodeName,
+      segmentID,
+      "n/a",
+      segment.wordCount
+    ]);
 
-    if (statement.statements != null) {
-      processStatements(array, statement.statements);
-    } 
-  }
+  });
+
+  return output;
 }
 
-
-export default function getDialogueSegments(parser) {
-  const dialogueSegments = [];
-  for(let nodeName of parser.nodeNames) {
-    const node = parser.nodeNamed(nodeName);
-    processStatements(dialogueSegments, node.statements);
-  }
-  console.log("Found:");
-  console.log(dialogueSegments);
+export default function process(parser) {
+  Identifiers.reset();
+  const nodes = getDialogueSegments(parser);
+  return formatOutput(extractText(nodes));;
 }
