@@ -1,5 +1,5 @@
 {
-  "name": "translation-example",
+  "name": "translation-tool",
   "version": "0.1.0",
   "private": true,
   "main": "public/electron.js",
@@ -29,11 +29,10 @@
   },
   "scripts": {
     "start-dev": "nf start -p 3000",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "build": "node util/electron-build.js"
   },
   "devDependencies": {
+    "commander": "^2.15.1",
     "electron": "^2.0.1",
     "electron-builder": "^20.13.4",
     "electron-devtools-installer": "^2.2.4",
