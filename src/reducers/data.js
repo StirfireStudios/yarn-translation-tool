@@ -56,7 +56,6 @@ export default createReducer({
     const newFileState = Object.assign({}, state.fileState);
     newFileState[data.id].parsing = false;
     newFileState[data.id].parseResults = data.results;
-    console.log(data.results);
     return {
       ...state,
       fileState: newFileState,
