@@ -2,10 +2,15 @@ import getDialogueSegments from './getDialogueSegments';
 import extractText from './extractText';
 import * as Identifiers from './identifiers';
 
+let wordsPerSecond = 1.8;
+
 function formatOutput(segments) {
-  const output = {recording: [], translation: []}
+  const output = {recording: [], translation: [], processing: []}
+  output.processing.push([
+    "Text", "Node Name", "SegmentID", "Line number"
+  ]);
   output.recording.push([
-    "Text", "Node Name", "SegmentID", "Line number", "Word Count", "Est. Length"
+    "Text", "Node Name", "SegmentID", "Word Count", "Est. Length"
   ]);
   output.translation.push([
     "Text", "Node Name", "SegmentID", "Path", "Notes", "Word Count"
@@ -16,12 +21,11 @@ function formatOutput(segments) {
     let lineNo = 1;
     const allText = [];
     segment.lines.forEach((line) => {
-      output.recording.push([
+      output.processing.push([
         line.text,
         nodeName,
         segmentID,
         lineNo,
-        line.wordCount
       ]);
       lineNo++;
       allText.push(line.text);
@@ -31,8 +35,8 @@ function formatOutput(segments) {
       allText.join("\n"),
       nodeName,
       segmentID,
-      "n/a",
-      segment.wordCount
+      segment.wordCount,
+      Math.ceil(segment.wordCount / wordsPerSecond)
     ]);
 
     output.translation.push([

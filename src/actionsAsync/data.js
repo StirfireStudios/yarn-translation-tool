@@ -10,6 +10,13 @@ const electron = window.require('electron');
 const fs = electron.remote.require('fs');
 const Path = electron.remote.require('path');
 
+const wbOpts = {
+  bookType:'xlsx', 
+  bookSST:true, 
+  compression: true, 
+  type:'binary',
+};
+
 export function LoadFile(path) {
   const id = ShortID.generate();
   DataActions.LoadStarted(id, path);
@@ -64,6 +71,12 @@ export function SaveCSV(key, filepath, results) {
     XLSX.utils.book_append_sheet(wb, recordingData, "Recording Info");
     const translationData = XLSX.utils.aoa_to_sheet(results.translation);
     XLSX.utils.book_append_sheet(wb, translationData, "Translation Info");
-    XLSX.writeFile(wb, partsOf(filepath).base + ".xlsb");
+    const processingData = XLSX.utils.aoa_to_sheet(results.processing);
+    XLSX.utils.book_append_sheet(wb, processingData, "Processing Info");
+    const fileParts = partsOf(filepath);
+    const shortName = `${fileParts.base}.xlsx`;
+    const fullPath = Path.join(fileParts.dir, shortName);
+    const xlsdata = XLSX.write(wb, wbOpts);
+    fs.writeFileSync(fullPath, xlsdata, {encoding: 'binary'});
   },0);
 }
