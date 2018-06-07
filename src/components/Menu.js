@@ -22,7 +22,6 @@ function onLoad() {
     if (filePaths == null) return;
     for(let path of filePaths) { DataAsyncActions.LoadFile(path); }
   });
-  console.log("Show Load Dialogue");
 }
 /** End of UI Functions */
 

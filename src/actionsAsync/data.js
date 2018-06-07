@@ -5,6 +5,7 @@ import * as DataActions from '../actions/data';
 
 import yarnProcessor from '../yarnProcessor';
 import excelWriter from '../excelWriter';
+import unrealWriter from '../unrealCsvWriter';
 
 const electron = window.require('electron');
 const fs = electron.remote.require('fs');
@@ -55,20 +56,15 @@ function partsOf(filepath) {
   }
 }
 
-export function SaveCSV(key, filepath, results) {
+export function SaveData(key, filepath, results) {
   DataActions.SaveStarted(key);
-  // avoid Zalgo
   setTimeout(() => {
-/*    const wb = XLSX.utils.book_new();
-    const recordingData = XLSX.utils.aoa_to_sheet(results.recording);
-    XLSX.utils.book_append_sheet(wb, recordingData, "Recording Info");
-    const translationData = XLSX.utils.aoa_to_sheet(results.translation);
-    XLSX.utils.book_append_sheet(wb, translationData, "Translation Info");
-    const processingData = XLSX.utils.aoa_to_sheet(results.processing);
-    XLSX.utils.book_append_sheet(wb, processingData, "Processing Info");*/
     const fileParts = partsOf(filepath);
-    const shortName = `${fileParts.base}.xlsx`;
-    const fullPath = Path.join(fileParts.dir, shortName);
-    fs.writeFileSync(fullPath, excelWriter(results), {encoding: 'binary'});
+    const excelName = `${fileParts.base}.xlsx`;
+    const excelfullPath = Path.join(fileParts.dir, excelName);
+    fs.writeFileSync(excelfullPath, excelWriter(results), {encoding: 'binary'});
+    const csvName = `${fileParts.base}.csv`;
+    const csvfullPath = Path.join(fileParts.dir, csvName);
+    fs.writeFileSync(csvfullPath, unrealWriter(results), {encoding: 'utf-8'});
   },0);
 }
