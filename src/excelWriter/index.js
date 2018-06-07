@@ -21,7 +21,11 @@ export default function excelWriter(results) {
     "Text", "Node Name", "SegmentID", "Path", "Notes", "Word Count"
   ]);
   const processing = Util.setupSheet([
-    "Text", "Node Name", "SegmentID", "Line number"
+    "Text", "Node Name", "SegmentID", "Line number", "File Directory"
+  ]);
+
+  const unreal = Util.setupSheet([
+    "SegmentID", "AudioPath", "AnimPath",
   ]);
 
   const settings = Settings.generate();
@@ -42,6 +46,7 @@ export default function excelWriter(results) {
         nodeName,
         segmentID,
         lineNo,
+        `\\Face\\${segmentID}\\`,
       ]);
       lineTextRef.finalRow++;
       lineNo++;
@@ -54,6 +59,12 @@ export default function excelWriter(results) {
       segmentID,
       lineNo - 1,
       segment.wordCount,
+    ]);
+
+    Util.appendDataToSheet(unreal, [
+      segmentID,
+      `'AnimationSequence'/Game/Face/${segmentID}/Anim`,
+      `'SoundCue'/Game/Face/${segmentID}/Audio`,
     ]);
 
     wordCountRef.finalRow++;
@@ -77,11 +88,13 @@ export default function excelWriter(results) {
   wb.SheetNames.push("Recording Info");
   wb.SheetNames.push("Translation Info");
   wb.SheetNames.push("Processing Info");
+  wb.SheetNames.push("Unreal Data");
   wb.SheetNames.push("Settings");
   wb.Sheets["Summary"] = Summary.generate(wordCountRef, lineRef, lineTextRef, lengthRef);
   wb.Sheets["Recording Info"] = recording;
   wb.Sheets["Translation Info"] = translation;
   wb.Sheets["Processing Info"] = processing;
+  wb.Sheets["Unreal Data"] = unreal;
   wb.Sheets["Settings"] = settings;
 
   console.log(wb);
