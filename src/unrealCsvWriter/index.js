@@ -1,6 +1,6 @@
 export default function unrealWriter(results) {
 
-	const lines = [];
+	const lines = ["id, AnimPath, AudioPath"];
 
 	results.forEach((segment) => {
 		const id = segment.identifier;
