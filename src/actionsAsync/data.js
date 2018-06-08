@@ -66,5 +66,8 @@ export function SaveData(key, filepath, results) {
     const csvName = `${fileParts.base}.csv`;
     const csvfullPath = Path.join(fileParts.dir, csvName);
     fs.writeFileSync(csvfullPath, unrealWriter(results), {encoding: 'utf-8'});
+    const jsonName = `${fileParts.base}.recording.json`;
+    const jsonFullPath = Path.join(fileParts.dir, jsonName);
+    fs.writeFileSync(jsonFullPath, JSON.stringify(results), {encoding: 'utf-8'});
   },0);
 }
