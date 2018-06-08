@@ -10,8 +10,8 @@ function processFile(data, event) {
   event.preventDefault();
 }
 
-function saveCSV(data, event) {
-  DataAsyncActions.SaveCSV(data.key, data.path, data.parseResults);
+function SaveData(data, event) {
+  DataAsyncActions.SaveData(data.key, data.path, data.parseResults);
   event.preventDefault();
 }
 
@@ -38,7 +38,7 @@ function renderMessage(data) {
   if (data.parseResults === null) {
     firstButton = <button key="process" onClick={processFile.bind(null, data)}>Process</button>
   } else {
-    firstButton = <button key="save" onClick={saveCSV.bind(null, data)}>Save</button>
+    firstButton = <button key="save" onClick={SaveData.bind(null, data)}>Save</button>
   }
 
   return (

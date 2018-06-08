@@ -2,7 +2,7 @@
   "name": "translation-tool",
   "author": "Stirfire Studios",
   "description": "Translation tool for yarn files",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "main": "public/electron.js",
   "homepage": "./",
@@ -24,6 +24,7 @@
     "prop-types": "^15.6.1",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
+    "react-electron-menu": "https://github.com/StirfireStudios/react-electron-menu.git",
     "react-redux": "^5.0.7",
     "react-scripts": "1.1.4",
     "redux": "^4.0.0",
@@ -32,15 +33,15 @@
     "xlsx": "^0.12.13"
   },
   "scripts": {
-    "start-dev": "nf start -p 3000",
+    "start-dev": "node util/start-dev.js",
     "build": "node util/electron-build.js"
   },
   "devDependencies": {
-    "asar": "^0.14.3",
     "commander": "^2.15.1",
+    "concurrently": "^3.5.1",
     "electron": "^2.0.1",
     "electron-builder": "^20.13.4",
     "electron-devtools-installer": "^2.2.4",
-    "foreman": "^2.0.0"
+    "wait-on": "^2.1.0"
   }
 }

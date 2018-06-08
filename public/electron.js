@@ -23,6 +23,8 @@ function createWindow() {
     mainWindow.loadURL(`${urlBase}/index.html`);
     mainWindow.setMenu(null);
 
+    mainWindow.webContents.openDevTools({mode: 'undocked'});
+
     if (isDev) {
         // open dev console in another window;
         mainWindow.webContents.openDevTools({mode: 'undocked'});
@@ -36,7 +38,7 @@ function createWindow() {
 			.catch((err) => {
 				console.log('React Dev Tools - An error occurred: ', err);
             });
-        installExtension(REDUX_DEVTOOLS) 
+        installExtension(REDUX_DEVTOOLS)
             .then((name) => {
                 console.log(`Added Extension:  ${name}`);
             })

@@ -21,7 +21,7 @@ export default function excelWriter(results) {
     "Text", "Node Name", "SegmentID", "Path", "Notes", "Word Count"
   ]);
   const processing = Util.setupSheet([
-    "Text", "Node Name", "SegmentID", "Line number"
+    "Text", "Node Name", "SegmentID", "Line number", "File Directory"
   ]);
 
   const settings = Settings.generate();
@@ -42,6 +42,7 @@ export default function excelWriter(results) {
         nodeName,
         segmentID,
         lineNo,
+        `\\Face\\${segmentID}\\`,
       ]);
       lineTextRef.finalRow++;
       lineNo++;
@@ -83,8 +84,6 @@ export default function excelWriter(results) {
   wb.Sheets["Translation Info"] = translation;
   wb.Sheets["Processing Info"] = processing;
   wb.Sheets["Settings"] = settings;
-
-  console.log(wb);
-
+  
   return Util.data(wb);
 }
