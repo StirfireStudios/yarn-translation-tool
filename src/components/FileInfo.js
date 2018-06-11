@@ -20,6 +20,14 @@ function unloadFile(data, event) {
   event.preventDefault();
 }
 
+function renderOffsetValue(data) {
+  if (data.parseResults !== null) return null;
+  const action = (event) => { DataActions.SetOffset(data.key, event.target.value); }
+  return (
+    <input type="number" value={data.offset} onChange={action}/>
+  )
+}
+
 function renderMessage(data) {
   if (data.error !== null) {
     return <span key="error" className="error">{data.error}</span>;
@@ -44,6 +52,7 @@ function renderMessage(data) {
   return (
     <div key="actions">
       {firstButton}
+      {renderOffsetValue(data)}
       <button key="unload" onClick={unloadFile.bind(null, data)}>Unload</button>
     </div>
   );

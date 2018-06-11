@@ -12,11 +12,21 @@ export default createReducer({
       error: null,
       data: null,
       parseResults: null,
+      offset: 0,
     }
     return {
       ...state,
       fileState: newFileState,
     }
+  },
+  [DataActions.SetOffset]: (state, data) => {
+    if (data.offset < 0) return state;
+    const newFileState = Object.assign({}, state.fileState);
+    newFileState[data.id].offset = data.offset;
+    return {
+      ...state,
+      fileState: newFileState,
+    }    
   },
   [DataActions.LoadCompleted]: (state, data) => {
     const newFileState = Object.assign({}, state.fileState);

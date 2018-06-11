@@ -30,7 +30,7 @@ export function LoadFile(path) {
   }
 }
 
-export function Parse(key, data) {
+export function Parse(key, data, offset) {
   DataActions.ParseStarted(key);
   // avoid Zalgo
   setTimeout(() => {
