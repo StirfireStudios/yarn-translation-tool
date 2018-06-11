@@ -22,9 +22,9 @@ function unloadFile(data, event) {
 
 function renderOffsetValue(data) {
   if (data.parseResults !== null) return null;
-  const action = (event) => { DataActions.SetOffset(data.key, event.target.value); }
+  const action = (event) => { DataActions.SetOffset(data.key, parseInt(event.target.value, 16)); }
   return (
-    <input type="number" value={data.offset} onChange={action}/>
+    <input value={data.offset.toString(16)} onChange={action}/>
   )
 }
 

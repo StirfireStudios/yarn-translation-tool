@@ -20,6 +20,7 @@ export default createReducer({
     }
   },
   [DataActions.SetOffset]: (state, data) => {
+    if (data.offset == NaN) return state;
     if (data.offset < 0) return state;
     const newFileState = Object.assign({}, state.fileState);
     newFileState[data.id].offset = data.offset;
