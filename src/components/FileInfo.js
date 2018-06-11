@@ -11,7 +11,7 @@ function processFile(data, event) {
 }
 
 function SaveData(data, event) {
-  DataAsyncActions.SaveData(data.key, data.path, data.parseResults);
+  DataAsyncActions.SaveData(data.key, data.path, data.parseResults, data.data);
   event.preventDefault();
 }
 

@@ -2,21 +2,31 @@ const minWidth = 4;
 
 let idNumber = 0;
 let maxID = 0;
+let used = [];
 
 export function reset() {
   idNumber = 0;
   maxID = 0;
+  used = [];
 }
 
-export function check(existingIdentifier) {
+export function addExisting(existingIdentifier) {
   if (existingIdentifier == null) {
-    existingIdentifier = idNumber;
-    idNumber++;
+    return; 
   }
 
-  if (maxID < existingIdentifier) maxID = existingIdentifier;
+  const parsedId = parseInt(existingIdentifier, 16);
+  used.push(parsedId);
+  if (maxID < parsedId) maxID = parsedId;
+}
 
-  return existingIdentifier;
+export function addNew() {
+  while(used.indexOf(idNumber) != -1) idNumber++;
+
+  const thisId = idNumber;
+  if (maxID < thisId) maxID = thisId;
+  idNumber++;
+  return thisId;
 }
 
 export function finalize(identifer) {
