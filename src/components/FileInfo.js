@@ -6,7 +6,7 @@ import * as DataAsyncActions from '../actionsAsync/data';
 
 
 function processFile(data, event) {
-  DataAsyncActions.Parse(data.key, data.data);
+  DataAsyncActions.Parse(data.key, data.data, data.offset);
   event.preventDefault();
 }
 
@@ -18,6 +18,14 @@ function SaveData(data, event) {
 function unloadFile(data, event) {
   DataActions.UnloadFile(data.key);
   event.preventDefault();
+}
+
+function renderOffsetValue(data) {
+  if (data.parseResults !== null) return null;
+  const action = (event) => { DataActions.SetOffset(data.key, parseInt(event.target.value, 16)); }
+  return (
+    <input value={data.offset.toString(16)} onChange={action}/>
+  )
 }
 
 function renderMessage(data) {
@@ -44,6 +52,7 @@ function renderMessage(data) {
   return (
     <div key="actions">
       {firstButton}
+      {renderOffsetValue(data)}
       <button key="unload" onClick={unloadFile.bind(null, data)}>Unload</button>
     </div>
   );

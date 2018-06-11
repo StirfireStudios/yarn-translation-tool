@@ -30,7 +30,7 @@ export function LoadFile(path) {
   }
 }
 
-export function Parse(key, data) {
+export function Parse(key, data, offset) {
   DataActions.ParseStarted(key);
   // avoid Zalgo
   setTimeout(() => {
@@ -40,7 +40,7 @@ export function Parse(key, data) {
       console.log("ERRORS");
       console.error(parser.errors);
     } else {
-      const results = yarnProcessor(parser);
+      const results = yarnProcessor(parser, offset);
       DataActions.ParseCompleted(key, results);
     }
   }, 0);

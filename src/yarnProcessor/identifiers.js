@@ -4,9 +4,10 @@ let idNumber = 0;
 let maxID = 0;
 let used = [];
 
-export function reset() {
-  idNumber = 0;
-  maxID = 0;
+export function reset(offset) {
+  if (offset == null) offset = 0;
+  idNumber = offset;
+  maxID = offset;
   used = [];
 }
 
