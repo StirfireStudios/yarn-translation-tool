@@ -50,13 +50,13 @@ function processStatements(segment, statements) {
 export default function extractText(nodes) {
   const segments = [];
   for(let node of nodes) {
-    if (node.dialogueStatements == null) {
-      debugger;
-    }
     for(let statement of node.dialogueStatements) {
       const segment = {
         nodeName: node.nodeName,
         identifier: Identifiers.check(statement.identifier),
+        existingIdentifier: statement.identifier != null,
+        startLine: statement.location.start.line,
+        startColumn: statement.location.start.column,
         lines: [],
         wordCounts: [],
         wordCount: 0,

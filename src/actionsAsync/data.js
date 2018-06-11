@@ -3,9 +3,10 @@ import ShortID from 'shortid';
 
 import * as DataActions from '../actions/data';
 
-import yarnProcessor from '../yarnProcessor';
 import excelWriter from '../excelWriter';
+import taggedYarnWriter from '../taggedYarnWriter';
 import unrealWriter from '../unrealCsvWriter';
+import yarnProcessor from '../yarnProcessor';
 
 const electron = window.require('electron');
 const fs = electron.remote.require('fs');
@@ -56,7 +57,7 @@ function partsOf(filepath) {
   }
 }
 
-export function SaveData(key, filepath, results) {
+export function SaveData(key, filepath, results, yarn) {
   DataActions.SaveStarted(key);
   setTimeout(() => {
     const fileParts = partsOf(filepath);
@@ -69,5 +70,9 @@ export function SaveData(key, filepath, results) {
     const jsonName = `${fileParts.base}.recording.json`;
     const jsonFullPath = Path.join(fileParts.dir, jsonName);
     fs.writeFileSync(jsonFullPath, JSON.stringify(results), {encoding: 'utf-8'});
+    const yarnName = `${fileParts.base}.tagged.yarn.txt`;
+    const yarnFullPath = Path.join(fileParts.dir, yarnName);
+    fs.writeFileSync(yarnFullPath, taggedYarnWriter(yarn, results), {encoding: 'utf-8'});
+
   },0);
 }
