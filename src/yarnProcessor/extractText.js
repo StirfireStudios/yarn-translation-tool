@@ -53,7 +53,7 @@ export default function extractText(nodes) {
     for(let statement of node.dialogueStatements) {
       const segment = {
         nodeName: node.nodeName,
-        identifier: Identifiers.check(statement.identifier),
+        identifier: statement.identifier,
         existingIdentifier: statement.identifier != null,
         startLine: statement.location.start.line,
         startColumn: statement.location.start.column,
@@ -61,9 +61,15 @@ export default function extractText(nodes) {
         wordCounts: [],
         wordCount: 0,
       }
+      Identifiers.addExisting(segment.identifier);
       segments.push(segment);
       processStatements(segment, statement.statements);
     }
+  }
+
+  for(let segment of segments) {
+    if (segment.existingIdentifier) continue;
+    segment.identifier = Identifiers.addNew();
   }
 
   for(let segment of segments) segment.identifier = Identifiers.finalize(segment.identifier);

@@ -6,7 +6,7 @@ function processStatements(array, statements) {
   for(let statement of statements) {
     if (statement instanceof DialogueSegment) {
       array.push(statement);
-      return;
+      continue;
     }
     
     if (statement instanceof YarnStatements.OptionGroup) continue;
