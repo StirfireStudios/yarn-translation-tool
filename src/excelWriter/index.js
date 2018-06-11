@@ -15,13 +15,13 @@ export default function excelWriter(results) {
   };
 
   const recording = Util.setupSheet([
-    "Text", "Node Name", "SegmentID", "Lines", "Word Count", "Est. Length"
+    "Text", "Node Name", "SegmentID", "Node Tags", "Lines", "Word Count", "Est. Length", 
   ]);
   const translation = Util.setupSheet([
-    "Text", "Node Name", "SegmentID", "Path", "Notes", "Word Count"
+    "Text", "Node Name", "SegmentID", "Path", "Notes", "Word Count",
   ]);
   const processing = Util.setupSheet([
-    "Text", "Node Name", "SegmentID", "Line number", "File Directory"
+    "Text", "Node Name", "SegmentID", "Line number", "File Directory",
   ]);
 
   const settings = Settings.generate();
@@ -47,12 +47,16 @@ export default function excelWriter(results) {
       lineTextRef.finalRow++;
       lineNo++;
       allText.push(line.text);
-    });
+    }); 
+
+    let tagString = "n/a";
+    if (Array.isArray(segment.tags)) tagString = segment.tags.join(",");
 
     Util.appendDataToSheet(recording, [
       allText.join("\n"),
       nodeName,
       segmentID,
+      tagString,
       lineNo - 1,
       segment.wordCount,
     ]);
