@@ -29,6 +29,7 @@ export default function getDialogueSegments(parser) {
     const node = parser.nodeNamed(nodeName);
     const nodeSegment = {
       nodeName: nodeName,
+      tags: node.tags,
       dialogueStatements: [],
     }
     processStatements(nodeSegment.dialogueStatements, node.statements);

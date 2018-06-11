@@ -53,6 +53,7 @@ export default function extractText(nodes) {
     for(let statement of node.dialogueStatements) {
       const segment = {
         nodeName: node.nodeName,
+        tags: node.tags,
         identifier: statement.identifier,
         existingIdentifier: statement.identifier != null,
         startLine: statement.location.start.line,
