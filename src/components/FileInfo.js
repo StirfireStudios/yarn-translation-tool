@@ -6,7 +6,7 @@ import * as DataAsyncActions from '../actionsAsync/data';
 
 
 function processFile(data, event) {
-  DataAsyncActions.Parse(data.key, data.data);
+  DataAsyncActions.Parse(data.key, data.data, data.offset);
   event.preventDefault();
 }
 

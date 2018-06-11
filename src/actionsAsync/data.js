@@ -40,7 +40,7 @@ export function Parse(key, data, offset) {
       console.log("ERRORS");
       console.error(parser.errors);
     } else {
-      const results = yarnProcessor(parser);
+      const results = yarnProcessor(parser, offset);
       DataActions.ParseCompleted(key, results);
     }
   }, 0);
