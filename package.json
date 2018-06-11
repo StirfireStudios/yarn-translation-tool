@@ -2,7 +2,7 @@
   "name": "translation-tool",
   "author": "Stirfire Studios",
   "description": "Translation tool for yarn files",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "main": "public/electron.js",
   "homepage": "./",
