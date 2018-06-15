@@ -62,8 +62,9 @@ export default function extractText(nodes) {
         lines: [],
         wordCounts: [],
         wordCount: 0,
-        response: segment.response
-      }
+        response: segment.response,
+        translationNotes: statement.translationNotes,
+      };
       Identifiers.addExisting(statement.identifier);
       segments.push(parsedSegment);
       processStatements(parsedSegment, statement.statements);

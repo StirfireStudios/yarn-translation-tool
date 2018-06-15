@@ -78,7 +78,7 @@ export default function excelWriter(results) {
       segmentID,
       nodeName,
       `Dialog.${segmentID}`,
-      "n/a",
+      segment.translationNotes.join(" \r\n"),
       segment.wordCount,
     ]);
   });
