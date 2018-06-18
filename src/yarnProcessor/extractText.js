@@ -50,8 +50,9 @@ function processStatements(segment, statements) {
 export default function extractText(nodes) {
   const segments = [];
   for(let node of nodes) {
-    for(let statement of node.dialogueStatements) {
-      const segment = {
+    for(let segment of node.dialogueSegments) {
+      const statement = segment.statement;
+      const parsedSegment = {
         nodeName: node.nodeName,
         tags: node.tags,
         identifier: statement.identifier,
@@ -61,10 +62,12 @@ export default function extractText(nodes) {
         lines: [],
         wordCounts: [],
         wordCount: 0,
-      }
-      Identifiers.addExisting(segment.identifier);
-      segments.push(segment);
-      processStatements(segment, statement.statements);
+        response: segment.response,
+        translationNotes: statement.translationNotes,
+      };
+      Identifiers.addExisting(statement.identifier);
+      segments.push(parsedSegment);
+      processStatements(parsedSegment, statement.statements);
     }
   }
 

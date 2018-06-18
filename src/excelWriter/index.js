@@ -15,21 +15,21 @@ export default function excelWriter(results) {
   };
 
   const recording = Util.setupSheet([
-    "Text", "Node Name", "SegmentID", "Node Tags", "Lines", "Word Count", "Est. Length", 
+    "Text", "SegmentID", "Node Name", "Node Tags", "Lines", "Word Count", "Est. Length", 
   ]);
   const translation = Util.setupSheet([
-    "Text", "Node Name", "SegmentID", "Path", "Notes", "Word Count",
+    "Text", "Response", "SegmentID", "Node Name", "Path", "Notes", "Word Count",
   ]);
   const processing = Util.setupSheet([
-    "Text", "Node Name", "SegmentID", "Line number", "File Directory",
+    "Text", "SegmentID", "Line number", "Node Name", "File Directory",
   ]);
 
   const settings = Settings.generate();
 
-  const wordCountRef = {col: 4, firstRow: 1, finalRow: 1, sheetName: "Recording Info"};
-  const lineRef = {col: 3, firstRow: 1, finalRow: 1, sheetName: "Recording Info"};
-  const lineTextRef = {col: 1, firstRow: 1, finalRow: 1, sheetName: "Processing Info"};
-  const lengthRef = {col: 5, firstRow: 1, finalRow: 1, sheetName: "Recording Info"};
+  const wordCountRef = {col: 5, firstRow: 1, finalRow: 1, sheetName: "Recording Info"};
+  const lineRef = {col: 4, firstRow: 1, finalRow: 1, sheetName: "Recording Info"};
+  const lineTextRef = {col: 0, firstRow: 1, finalRow: 1, sheetName: "Processing Info"};
+  const lengthRef = {col: 6, firstRow: 1, finalRow: 1, sheetName: "Recording Info"};
 
   results.forEach((segment) => {
     const nodeName = segment.nodeName;
@@ -37,43 +37,48 @@ export default function excelWriter(results) {
     let lineNo = 1;
     const allText = [];
     segment.lines.forEach((line) => {
+      allText.push(line.text);
+      if (segment.response) return;
       Util.appendDataToSheet(processing, [
         line.text,
-        nodeName,
         segmentID,
         lineNo,
+        nodeName,
         `\\Face\\${segmentID}\\`,
       ]);
       lineTextRef.finalRow++;
       lineNo++;
-      allText.push(line.text);
     }); 
 
-    let tagString = "n/a";
-    if (Array.isArray(segment.tags)) tagString = segment.tags.join(",");
+    if (!segment.response) {
+      let tagString = "n/a";
+      if (Array.isArray(segment.tags)) tagString = segment.tags.join(",");
+  
+      Util.appendDataToSheet(recording, [
+        allText.join("\n"),
+        segment.response ? "Yes" : "No",
+        segmentID,
+        nodeName,
+        tagString,
+        lineNo - 1,
+        segment.wordCount,
+      ]);
+  
+      wordCountRef.finalRow++;
+      lineRef.finalRow++;
+      lengthRef.finalRow++;
 
-    Util.appendDataToSheet(recording, [
-      allText.join("\n"),
-      nodeName,
-      segmentID,
-      tagString,
-      lineNo - 1,
-      segment.wordCount,
-    ]);
-
-    wordCountRef.finalRow++;
-    lineRef.finalRow++;
-    lengthRef.finalRow++;
-
-    const wordCountCellRef = Util.getReferenceFor(recording.lastWrite.row, recording.lastWrite.col);
-    Util.appendFormulaToSheet(recording, `${wordCountCellRef}/Settings!${settings.locations["Words Per Second"]}`)
+      const wordCountCellRef = Util.getReferenceFor(recording.lastWrite.row, recording.lastWrite.col);
+      Util.appendFormulaToSheet(recording, `${wordCountCellRef}/Settings!${settings.locations["Words Per Second"]}`)  
+    }
 
     Util.appendDataToSheet(translation, [
       allText.join("\n"),
-      nodeName,
+      segment.response ? "Yes" : "No",
       segmentID,
+      nodeName,
       `Dialog.${segmentID}`,
-      "n/a",
+      segment.translationNotes.join(" \r\n"),
       segment.wordCount,
     ]);
   });

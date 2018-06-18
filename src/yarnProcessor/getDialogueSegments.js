@@ -2,22 +2,30 @@ import { Statement as YarnStatements } from 'jacquard-yarnparser';
 
 import DialogueSegment from 'jacquard-yarnparser/dist/statements/dialogueSegment';
 
-function processStatements(array, statements) {
+function processStatements(array, statements, response) {
+  if (response == null) response = false;
   for(let statement of statements) {
     if (statement instanceof DialogueSegment) {
-      array.push(statement);
+      array.push({response: response, statement: statement});
       continue;
     }
     
-    if (statement instanceof YarnStatements.OptionGroup) continue;
-    if (statement instanceof YarnStatements.ShortcutGroup) continue;
+    if (statement instanceof YarnStatements.OptionGroup) {
+      processStatements(array, statement.statements, true);
+      continue;
+    }
+
+    if (statement instanceof YarnStatements.ShortcutGroup) {
+      processStatements(array, statement.statements, true);
+      continue;
+    }
 
     if (statement.statements != null) {
-      processStatements(array, statement.statements);
+      processStatements(array, statement.statements, response);
     } 
     if (statement.clauses != null) {
       for(let clause of statement.clauses) {
-        processStatements(array, clause.statements);
+        processStatements(array, clause.statements, response);
       }
     }
   }
@@ -30,9 +38,9 @@ export default function getDialogueSegments(parser) {
     const nodeSegment = {
       nodeName: nodeName,
       tags: node.tags,
-      dialogueStatements: [],
+      dialogueSegments: [],
     }
-    processStatements(nodeSegment.dialogueStatements, node.statements);
+    processStatements(nodeSegment.dialogueSegments, node.statements);
     nodes.push(nodeSegment);
   }
   return nodes;
